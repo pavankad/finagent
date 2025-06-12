@@ -17,16 +17,9 @@ FinAgent is an advanced financial trading and analysis platform that combines ma
 
 ## Installation
 
-1. Clone the repository:
+1. Install FinRl:
 ```bash
-git clone https://github.com/yourusername/finagent.git
-cd finagent
-```
-
-2. Initialize the FinRL submodule:
-```bash
-git submodule init
-git submodule update
+pip install git+https://github.com/AI4Finance-Foundation/FinRL.git
 ```
 
 3. Install dependencies:
@@ -40,7 +33,8 @@ pip install -r requirements.txt
   - `fact_checker_agent.py` - Verifies financial claims
   - `fraud_agent.py` - Detects fraudulent transactions
   - `sentiment_agent.py` - Analyzes financial news sentiment
-  - `/models/` - Pre-trained ML models
+  - `models/` - Pre-trained ML models
+  - `results/` - DRLAgent copies results
 - `/data/` - Financial datasets and processed data
   - `/processed/` - Cleaned and transformed data
 - `data_processor.py` - Data processing utilities for financial data
