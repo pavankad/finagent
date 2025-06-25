@@ -17,14 +17,19 @@ FinAgent is an advanced financial trading and analysis platform that combines ma
 
 ## Installation
 
-1. Install FinRl:
-```bash
-pip install git+https://github.com/AI4Finance-Foundation/FinRL.git
+Set up venv
 ```
+python3 -m venv venv
+source venv/bin/activate 
 
-3. Install dependencies:
+```
+Install dependencies:
 ```bash
 pip install -r requirements.txt
+```
+## Running the Project
+```bash
+python analyze_sample_data.py
 ```
 
 ## Project Structure
@@ -33,10 +38,14 @@ pip install -r requirements.txt
   - `fact_checker_agent.py` - Verifies financial claims
   - `fraud_agent.py` - Detects fraudulent transactions
   - `sentiment_agent.py` - Analyzes financial news sentiment
+  - `trade_agent.py` - Implements portfolio allocation strategies
+  - `FinRL_PortfolioAllocation_NeurIPS_2020.ipynb` - Notebook for portfolio allocation training using FinRL
   - `models/` - Pre-trained ML models
   - `results/` - DRLAgent copies results
 - `/data/` - Financial datasets and processed data
   - `/processed/` - Cleaned and transformed data
+      - `price_history.csv` - Historical stock prices
+      - `tickert_data` - Ticker metadata
 - `data_processor.py` - Data processing utilities for financial data
 - `yfinance_data.py` - Yahoo Finance data fetching functionality
 
@@ -73,6 +82,8 @@ fact_checks = fetch_fact_checks(claim)
 ## Reinforcement Learning
 
 The project integrates FinRL, a deep reinforcement learning library for automated stock trading. See the Jupyter notebook in `/agents/FinRL_PortfolioAllocation_NeurIPS_2020.ipynb` for examples.
+
+
 
 ## Contributing
 
