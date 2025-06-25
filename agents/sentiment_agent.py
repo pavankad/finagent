@@ -28,5 +28,9 @@ def batch_classify(news_list: list[str]) -> list[dict]:
 
 headline = "Tesla stock drops after CEO sells $5 billion in shares"
 result = classify_sentiment(headline)
-
 print(f"Sentiment: {result['sentiment']} ({result['confidence']*100:.1f}%)")
+
+headline = "Markets react to economic data showing unexpected growth"
+result2 = classify_sentiment(headline)
+
+print(f"Sentiment: {result2['sentiment']} ({result2['confidence']*100:.1f}%)")

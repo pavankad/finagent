@@ -8,6 +8,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import classification_report
 import joblib
 import os
+import pdb
 
 fake = Faker()
 np.random.seed(42)
@@ -80,11 +81,12 @@ def train_model(df):
 # Step 3: Predict Function
 def predict_fraud(txn, model_path="models/fraud_detector.pkl", feature_names=None):
     model = joblib.load(model_path)
-    df = pd.DataFrame([txn])
+    pdb.set_trace()
+    df = pd.DataFrame(txn)
     df_enc = pd.get_dummies(df[["merchant", "instrument", "intent", "order_type", "channel"]])
-    base = pd.DataFrame([txn["amount"]], columns=["amount"])
+    base = pd.DataFrame(df["amount"], columns=["amount"])
     input_df = pd.concat([base, df_enc], axis=1).reindex(columns=feature_names, fill_value=0)
-    return bool(model.predict(input_df)[0])
+    return model.predict(input_df)
 
 # Main execution
 if __name__ == "__main__":
@@ -95,13 +97,26 @@ if __name__ == "__main__":
     model, feature_names = train_model(df)
 
     # Example prediction
-    new_txn = {
+    new_txn = [{
         "merchant": "Robinhood",
         "instrument": "GOOG",
         "intent": "buy",
         "amount": 15000,
         "order_type": "limit",
         "channel": "API"
-    }
+    },
+    {
+        "merchant": "Wealthfront",
+        "instrument": "AAPL",
+        "intent": "sell",
+        "amount": 5000,
+        "order_type": "market",
+        "channel": "web"
+    }]
+    
     result = predict_fraud(new_txn, feature_names=feature_names)
-    print(f"\nIs the new transaction fraudulent? {'Yes' if result else 'No'}")
+    #Each element in array is the predicted value of false or true
+    #print each of the elements and call fraudulent if true
+    print("Prediction results:")
+    for i, txn in enumerate(new_txn):
+        print(f"Transaction {i+1}: {'Fraudulent' if result[i] else 'Not Fraudulent'}")

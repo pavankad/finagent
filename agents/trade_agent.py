@@ -12,7 +12,6 @@ MODEL_PATH = Path("/Users/pavan/vscode/finagent/agents/models/trained_ppo.zip")
 
 # Environment creation
 def create_env(df):
-    pdb.set_trace()
     env_kwargs = {
     "hmax": 100,
     "initial_amount": 1000000,
@@ -34,10 +33,8 @@ def load_trading_agent():
 
 # Simulate live environment
 def make_trading_decision(latest_data):
-    pdb.set_trace()
     env = create_env(latest_data)
     model = load_trading_agent()
-    pdb.set_trace()
     df_daily_return, df_actions = DRLAgent.DRL_prediction(model=model, environment = env)
     return df_daily_return, df_actions  # Maps to asset allocation decision
 
@@ -56,10 +53,8 @@ def evaluate_trading_agent(df):
     return np.sum(rewards)
 
 
-if __name__ == "__main__":
-    df = pd.read_csv('/Users/pavan/vscode/finagent/data/processed/ticker_data')  # Load your stock data
+def make_portfolio_allocation(df, last_n_days=2):
     df = df.rename(columns={'timestamp': 'date'})
-    pdb.set_trace()
     #add technical indicators
     fe = FeatureEngineer(
                     use_technical_indicator=True,
@@ -90,10 +85,20 @@ if __name__ == "__main__":
     df_cov = pd.DataFrame({'date':df.date.unique()[lookback:],'cov_list':cov_list,'return_list':return_list})
     df = df.merge(df_cov, on='date')
     df = df.sort_values(['date','tic']).reset_index(drop=True)
-    pdb.set_trace()
-    trade = data_split(df, '2021-08-02', '2021-08-04')
+    # You can run below prediction based on initial training data split train/test
+    #trade = data_split(df, '2021-08-02', '2021-08-04')
+    #based on last_n_days as input, generate start_date and end_date for data_split
+    start_date = df['date'].max() - pd.Timedelta(days=last_n_days)
+    end_date = df['date'].max()
+    trade = data_split(df, start_date, end_date)
     print(df)
     df_daily_return, df_actions = make_trading_decision(trade)
     print("Daily Returns:\n", df_daily_return)
     print("Actions:\n", df_actions)
+    return df_actions
+
     
+if __name__ == "__main__":
+    df = pd.read_csv('/Users/pavan/vscode/finagent/data/processed/ticker_data')  # Load your stock data
+    make_portfolio_allocation(df, last_n_days=2)
+    # Example usage
